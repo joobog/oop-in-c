@@ -1,0 +1,2 @@
+"let g:Tex_CompileRule_pdf='pdflatex -interaction=nonstopmode -shell-escape -synctex=1 $*'
+let g:Tex_CompileRule_pdf='lualatex -shell-escape -synctex=1 -interaction=nonstopmode $*'
