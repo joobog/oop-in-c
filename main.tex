@@ -92,7 +92,7 @@ Diese Ausarbeitung zeigt nur eine Möglichkeit objekt-orientiert zu Programmiere
 Hier wollen wir nur so weit gehen, wie es mit dem C-Standard möglich ist, d.h. ohne Verwendung von Kompilererweiterungen und ohne Praeprozessor.
 
 
-\section{Einfache Klassen}
+\section{Klassen}
 Eine Klasse definiert einen Bauplan für einen neuen Datentypen.
 Vor Allem legen wir fest welche Daten die Klasse beinhalten soll.
 Desweiteren definieren wir die Operation, die mit dieser Klasse gebunden sind.
@@ -106,16 +106,17 @@ In den Beispielen werden wir die Memberfunktionen stets nach dem folgenden Schem
 <Memberfunktionsname> = <Klassenname>_<Funktionsname>
 \end{lstlisting}
 
+\subsection{Klassenfunktion}
 \begin{code}
 	\caption{A.h}
-	\inputminted{C}{code/simple_classes/A.h}
+	\inputminted{C}{code/employees/employee.h}
 \end{code}
 
 Die Implementierung koennte wie folgt aussehen.
 
 \begin{code}
 	\caption{A.c}
-	\inputminted{C}{code/simple_classes/A.c}
+	\inputminted{C}{code/employees/employee.c}
 \end{code}
 
 
@@ -123,16 +124,18 @@ Bei der Benutzung sollen wir beachten, dass wir den Konstruktor und den Destrukt
 
 \begin{code}
 	\caption{main}
-	\inputminted{C}{code/simple_classes/main.c}
+	\inputminted{C}{code/employees/main.c}
 \end{code}
 
-
-\subsection{Konstruktor und Destruktor}
+\subsection{Kritik}
+\subsubsection{Zugriffskontrolle}
+C-Standard bietet und keine Konstrukte mit den mit den man den Zugriff auf die Klassenvariablen und Klassenfunktionen beschränken könnte. Alle Variablen und Methoden sind \mintinline{C}|public|. Nachbildung von \mintinline{C}|protected| \mintinline{C}|private| nicht ohne weiteres möglich.
+\subsubsection{Konstruktor und Destruktor}
 Es ist leider so, dass beim Erzeugen eines Objektes der passende Konstruktor nicht automatisch aufgerufen wird, wie z.B. bei C++ oder Java.
 Darum muss sich der Programmier explizit kümmern.
 Das erfordert zwar viel Disziplin, bedeutet für uns keine Nachteile in der Funktionalität.
 Bei den Destruktoren müssen wir leider Abstriche machen.
-C bietet uns weder eine Garagabe-Kollektor noch Ruf den Destrutkor automatisch auf, wenn das Programm den Scope verlässt.
+C bietet uns weder eine Garbage-Kollektor noch Ruf den Destrutkor automatisch auf, wenn das Programm den Scope verlässt.
 Konkret für uns heißt es wieder viel Disziplin, aber auch das wir bestimmte Programmierkonzepte wie "RAII" nicht umsetzen können.
 
 \begin{note}
@@ -140,20 +143,13 @@ Konkret für uns heißt es wieder viel Disziplin, aber auch das wir bestimmte Pr
 \end{note}
 
 
-\begin{missing}{Zugriffskontrolle}
-	 Keine Zugriffskontrolle
-		 \begin{itemize}
-			 \item Alle Variablen und Methoden sind \mintinline{C}|public|
-			 \item Nachbildung von \mintinline{C}|protected| \mintinline{C}|private| nicht ohne weiteres möglich
-		 \end{itemize}
-\end{missing}
 
 
 Wie wir spaeter sehen werden liegt der Vorteil der einfachen Klassen im geringeren Speicherverbrauch durch den fehlenden Zeiger auf eine virtuelle Tabelle.
 
 
 
-\section{Vererbung}
+\section{Abgeleiteten Klassen}
 Die Grundidee der Vererbung ist die Wiederverwendung vom Code.
 Dadurch wird auch die Wartung der Programme erheblich vereinfacht.
 Nach der Vererbung erhält die abgeleitete Klasse die Funktionalität der Basisklasse.
@@ -251,36 +247,7 @@ b.q = 6;
 %    \caption{Beispielgrafik}
 %  \end{figure}
 
-
-%\column{0.35\textwidth}
-%\begin{minted}{C}
-%struct Component {
-%  double price;
-%  double weigth;
-%};
-
-%struct GPU {
-%  Component super;
-%  float freq;
-%};
-
-%struct NetworkAdapter{
-%  Component super;
-%  char num_of_connectors;
-%};
-
-%struct Infiniband {
-%  NetworkAdapter super;
-%  int num_of_links;
-%};
-
-%struct Ethernet {
-%  Networkadapter super;
-%  int class;
-%  int cat;
-%};
-%\end{minted}
-%\end{columns}
+\inputminted{C}{code/employees/employee.h}
 
 
 %\end{frame}
@@ -288,59 +255,54 @@ b.q = 6;
 
 %\begin{frame}[fragile]{Anonyme Strukturen}
 
-%\begin{code}
-%\caption{Basisklasse}
-%\begin{minted}{C}
-%struct base_t { int a; };
-%\end{minted}
-%\end{code}
-%  \begin{columns}
-%    \column{0.5\textwidth}
+\begin{code}
+\caption{Basisklasse}
+\begin{minted}{C}
+struct base_t { int a; };
+\end{minted}
+\end{code}
 
-%\begin{code}
-%\caption{Anonyme Struktur}
-%\begin{minted}{C}
-%struct derived_t {
-%  struct base_t;
-%  int b;
-%};
-%\end{minted}
-%\end{code}
+\begin{code}
+\caption{Anonyme Struktur}
+\begin{minted}{C}
+struct derived_t {
+ struct base_t;
+ int b;
+};
+\end{minted}
+\end{code}
 
-%\begin{code}
-%\caption{Zugriff}
-%\begin{minted}{C}
-%struct derived_t d;
-%d.a = 5;
-%d.b = 6;
-%\end{minted}
-%\end{code}
+\begin{code}
+\caption{Zugriff}
+\begin{minted}{C}
+struct derived_t d;
+d.a = 5;
+d.b = 6;
+\end{minted}
+\end{code}
 
-%    \column{0.5\textwidth}
-%\begin{code}
-%\caption{Beispielquelltext}
-%\begin{minted}{C}
-%struct derived_t {
-%  struct base_t this;
-%  int b;
-%};
-%\end{minted}
-%\end{code}
+\begin{code}
+\caption{Beispielquelltext}
+\begin{minted}{C}
+struct derived_t {
+ struct base_t this;
+ int b;
+};
+\end{minted}
+\end{code}
 
-%\begin{code}
-%\caption{Beispielquelltext}
-%\begin{minted}{C}
-%struct derived_t d;
-%d.this.a = 5;
-%d.b = 6;
-%\end{minted}
-%\end{code}
-
-%  \end{columns}
-%\end{frame}
+\begin{code}
+\caption{Beispielquelltext}
+\begin{minted}{C}
+struct derived_t d;
+d.this.a = 5;
+d.b = 6;
+\end{minted}
+\end{code}
 
 
-%\section{Virtuelle Funktionen}
+\section{Abstrakte Klassen}
+\subsection{Virtuelle Funktionen}
 %%https://www.embedded.com/electronics-blogs/programming-pointers/4391967/Virtual-functions-in-C
 %%http://vgcoding.blogspot.com/2014/03/virtual-functions-in-c.html
 
