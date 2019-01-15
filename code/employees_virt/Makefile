@@ -6,9 +6,9 @@ objects = manager.o employee.o main.o
 prog: $(objects)
 	gcc $(CFLAGS) -o prog $(objects)
 
-main.o: main.c
-employee.o: employee.c employee.h
-manager.o: manager.c manager.h employee.c employee.h
+main.o: main.c debug.h
+employee.o: employee.c employee.h debug.h
+manager.o: manager.c manager.h employee.c employee.h debug.h
 
 .PHONY: clean
 clean:
