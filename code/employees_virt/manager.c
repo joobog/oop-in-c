@@ -1,14 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "manager.h"
 #include "debug.h"
 
-static manager_vtbl_t manager_vtbl = {manager_print, manager_add_member};
-//static manager_vtbl_t manager_vtbl = {employee_print, manager_add_member};
+static manager_vtbl_t manager_vtbl = {
+	.print = (void (*)(employee_t*)) manager_print,
+  .add_member = manager_add_member
+};
 
 void manager_constructor(manager_t *this, char* firstname, char* lastname, int level) {
-	employee_constructor((employee_t*) this, firstname, lastname);
-	DEBUGMSG("");
+	employee_constructor(&this->super, firstname, lastname);
+	DEBUGMSG("%s %s", firstname, lastname);
 	this->super.vtbl = (employee_vtbl_t*) &manager_vtbl;
 	this->max_group_size = 10;
 	this->group_size = 0;
@@ -17,13 +20,13 @@ void manager_constructor(manager_t *this, char* firstname, char* lastname, int l
 }
 
 void manager_destructor(manager_t *this) {
-	DEBUGMSG("");
+	DEBUGMSG("%s %s", this->super.firstname, this->super.lastname);
 	free(this->group);
 	employee_destructor((employee_t*) this);
 }
 
 int manager_add_member(manager_t *this, employee_t* employee) {
-	DEBUGMSG("");
+	DEBUGMSG("%s %s", this->super.firstname, this->super.lastname);
 	if (this->group_size < this->max_group_size) {
 		this->group[this->group_size] = employee;
 		this->group_size +=1;
@@ -34,8 +37,9 @@ int manager_add_member(manager_t *this, employee_t* employee) {
 	}
 }
 
-void manager_print(manager_t *this) {
-	DEBUGMSG("");
+void manager_print(void *this) {
+	manager_t *me = this;
+	DEBUGMSG("%s %s", this->super.firstname, this->super.lastname);
 	printf("Manager (%d) %s %s\n", this->level, this->super.firstname, this->super.lastname);
 	for (int i = 0; i < this->group_size; i++) {
 		this->group[i]->vtbl->print(this->group[i]);

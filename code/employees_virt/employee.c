@@ -5,23 +5,25 @@
 #include "debug.h"
 #include "employee.h"
 
-static employee_vtbl_t employee_vtbl = {employee_print};
+static employee_vtbl_t employee_vtbl = {
+  .print = employee_print
+};
 
 void employee_constructor(employee_t *this, char* firstname, char* lastname) {
-	DEBUGMSG("");
+	DEBUGMSG("%s %s", firstname, lastname);
 	this->vtbl = (employee_vtbl_t*) &employee_vtbl;
 	this->firstname = strdup(firstname);
 	this->lastname = strdup(lastname);
 }
 
 void employee_destructor(employee_t *this) {
-	DEBUGMSG("");
+	DEBUGMSG("%s %s", this->firstname, this->lastname);
 	free(this->firstname);
 	free(this->lastname);
 }
 
 void employee_print(employee_t *this) {
-	DEBUGMSG("");
+	DEBUGMSG("%s %s", this->firstname, this->lastname);
 	printf("Employee: %s %s\n", this->firstname, this->lastname);
 }
 
