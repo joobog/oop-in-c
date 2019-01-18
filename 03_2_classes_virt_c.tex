@@ -1,0 +1,19 @@
+\section{Abgeleiteten Klassen}
+Die Grundidee der Vererbung ist die Wiederverwendung vom Code.
+Dadurch wird auch die Wartung der Programme erheblich vereinfacht.
+Nach der Vererbung erhält die abgeleitete Klasse die Funktionalität der Basisklasse.
+
+Den Preis, den wir dafür bezahlen, ist typischerweise den Speicher für ein Zeiger auf eine virtuelle Tabelle (8 bytes in der 64bit-Architektur).
+Das ist aber eine Implementierungssache und der Preis kann bei anderen Implementierungen ganz anders sein.
+
+
+\begin{code}
+	\inputminted{cpp}{code/employees_virt_cpp/main.cpp}
+	\inputminted[bgcolor=white]{text}{code/employees_virt_cpp/output.txt}
+\end{code}
+
+\begin{code}
+	\caption{main}
+	\inputminted{c}{code/employees_virt/main.c}
+	\inputminted[bgcolor=white]{text}{code/employees_virt/output.txt}
+\end{code}

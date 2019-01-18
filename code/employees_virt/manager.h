@@ -3,6 +3,9 @@
 
 #include "employee.h"
 
+#define M_manager_add_member(me, employee) ( ((manager_vtbl_t*) ((employee_t*) me)->vtbl)->add_member((me), (employee)))
+#define M_manager_print(me) ( ((manager_vtbl_t*) ((employee_t*) me)->vtbl)->print(me))
+
 typedef struct manager_vtbl_t manager_vtbl_t;
 
 typedef struct manager_t {
@@ -10,17 +13,17 @@ typedef struct manager_t {
 	int level;
 	unsigned int max_group_size;
 	unsigned int group_size;
-	employee_t** group;
+	employee_t **group;
 } manager_t;
 
-void manager_constructor(manager_t *this, char* firstname, char* lastname, int level);
-void manager_destructor(manager_t *this);
-int manager_add_member(manager_t *this, employee_t* employee);
-void manager_print(manager_t *this);
+void manager_constructor(void *_this, char *firstname, char *lastname, int level);
+void manager_destructor(void *_this);
+int manager_add_member(void *_this, employee_t *employee);
+void manager_print(void *_this);
 
 struct manager_vtbl_t {
 	struct employee_vtbl_t;
-	int (*add_member)(manager_t* manager, employee_t* employee);
+	int (*add_member)(void *_this, employee_t *employee);
 };
 
 #endif   /* ----- #ifndef manager_INC  ----- */

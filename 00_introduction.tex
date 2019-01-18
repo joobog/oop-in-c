@@ -1,0 +1,16 @@
+\section{Einleitung}
+Obwohl C keine Objekt-orientiert Programmierung unterstützt kann man die Sprache sehr wohl objekt-orientiert programmieren.
+Das erfordert allerdings etwas Disziplin, weil C uns kaum unterstützt.
+Diese Ausarbeitung zeigt nur eine Möglichkeit objekt-orientiert zu Programmieren von Vielen.
+Hier wollen wir nur so weit gehen, wie es mit dem C-Standard möglich ist, d.h. ohne Verwendung von Kompilererweiterungen und ohne Praeprozessor.
+
+\section{Debugging}
+Um die Funktionsweise zu erläutern schleusen wir Debugging-Code in die Programme.
+Es handelt sich dabei um die Ausgabe des Funktionsnamen, der Zeile und Kommentar.
+Das Macro ist dargestellt in \Cref{code:debug}
+
+\begin{code}
+	\caption{Debugging Macro}
+	\label{code:debug}
+	\inputminted{c}{code/employees_virt/debug.h}
+\end{code}

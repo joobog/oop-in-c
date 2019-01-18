@@ -1,8 +1,9 @@
-\documentclass{article}
+\documentclass[a4paper]{article}
 
 \usepackage[T1]{fontenc}
 %\usepackage[utf8]{inputenc}
 
+\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 
 \usepackage{silence}
 \WarningFilter{latex}{Command}
@@ -62,6 +63,7 @@
 }
 
 \usepackage{hyperref}
+\usepackage{cleveref}
 \usepackage{microtype}
 \usepackage{textcomp}
 \usepackage{units}
@@ -85,229 +87,15 @@
 \maketitle
 
 \tableofcontents
-\section{Einleitung}
-Obwohl C keine Objekt-orientiert Programmierung unterstützt kann man die Sprache sehr wohl objekt-orientiert programmieren.
-Das erfordert allerdings etwas Disziplin, weil C uns kaum unterstützt.
-Diese Ausarbeitung zeigt nur eine Möglichkeit objekt-orientiert zu Programmieren von Vielen.
-Hier wollen wir nur so weit gehen, wie es mit dem C-Standard möglich ist, d.h. ohne Verwendung von Kompilererweiterungen und ohne Praeprozessor.
 
-
-\section{Klassen}
-Eine Klasse definiert einen Bauplan für einen neuen Datentypen.
-Vor Allem legen wir fest welche Daten die Klasse beinhalten soll.
-Desweiteren definieren wir die Operation, die mit dieser Klasse gebunden sind.
-
-Die Stukturen kapseln die Daten ein.
-Der Konstruktor, Destruktor und die Memberfuktionen lagern wir extern aus.
-
-Das die Memberfunktionen nicht an eine Struktur gebunden werden können, ist es hilfreich sich eine Namenskonvetione zu überlegen, die die Zugehörigkeit anzeigt. 
-In den Beispielen werden wir die Memberfunktionen stets nach dem folgenden Schema benennen.
-\begin{lstlisting}
-<Memberfunktionsname> = <Klassenname>_<Funktionsname>
-\end{lstlisting}
-
-\subsection{Klassenfunktion}
-\begin{code}
-	\caption{A.h}
-	\inputminted{C}{code/employees/employee.h}
-\end{code}
-
-Die Implementierung koennte wie folgt aussehen.
-
-\begin{code}
-	\caption{A.c}
-	\inputminted{C}{code/employees/employee.c}
-\end{code}
-
-
-Bei der Benutzung sollen wir beachten, dass wir den Konstruktor und den Destruktor manuell aufrufen. 
-
-\begin{code}
-	\caption{main}
-	\inputminted{C}{code/employees/main.c}
-\end{code}
-
-\subsection{Kritik}
-\subsubsection{Zugriffskontrolle}
-C-Standard bietet und keine Konstrukte mit den mit den man den Zugriff auf die Klassenvariablen und Klassenfunktionen beschränken könnte. Alle Variablen und Methoden sind \mintinline{C}|public|. Nachbildung von \mintinline{C}|protected| \mintinline{C}|private| nicht ohne weiteres möglich.
-\subsubsection{Konstruktor und Destruktor}
-Es ist leider so, dass beim Erzeugen eines Objektes der passende Konstruktor nicht automatisch aufgerufen wird, wie z.B. bei C++ oder Java.
-Darum muss sich der Programmier explizit kümmern.
-Das erfordert zwar viel Disziplin, bedeutet für uns keine Nachteile in der Funktionalität.
-Bei den Destruktoren müssen wir leider Abstriche machen.
-C bietet uns weder eine Garbage-Kollektor noch Ruf den Destrutkor automatisch auf, wenn das Programm den Scope verlässt.
-Konkret für uns heißt es wieder viel Disziplin, aber auch das wir bestimmte Programmierkonzepte wie "RAII" nicht umsetzen können.
-
-\begin{note}
-	Das geht mit der clean() Erweiterung. Das ist aber keine Standard-C, somit wird diese MÖglichkeit hier nicht behandelt.
-\end{note}
+\input{00_introduction}
+\input{02_classes_plain}
+\input{03_1_classes_virt_cpp}
+\input{03_2_classes_virt_c}
+%\input{05_best_practices}
 
 
 
-
-Wie wir spaeter sehen werden liegt der Vorteil der einfachen Klassen im geringeren Speicherverbrauch durch den fehlenden Zeiger auf eine virtuelle Tabelle.
-
-
-
-\section{Abgeleiteten Klassen}
-Die Grundidee der Vererbung ist die Wiederverwendung vom Code.
-Dadurch wird auch die Wartung der Programme erheblich vereinfacht.
-Nach der Vererbung erhält die abgeleitete Klasse die Funktionalität der Basisklasse.
-
-Den Preis, den wir dafür bezahlen, ist typischerweise den Speicher für ein Zeiger auf eine virtuelle Tabelle (8 bytes in der 64bit-Architektur).
-Das ist aber eine Implementierungssache und der Preis kann bei anderen Implementierungen ganz anders sein.
-
-
-\begin{code}
-	\caption{main}
-	\inputminted{c}{code/employees_virt/main.c}
-	\inputminted{c}{code/employees_virt/output.c}
-	\inputminted{cpp}{code/employees_virt_cpp/main.cpp}
-	\inputminted{text}{code/employees_virt_cpp/output.txt}
-\end{code}
-
-
-\subsection{Nameskonflikte}
-
-Bevor wir die Vererbung implementieren, müssen wir es die Entscheidung treffen wie wir mit den Namenkonflikten umgehen.
-Wir haben die Wahl zwischen einer benannten oder anonymen Basisklasse.
-Bei der ersteren ist der Zugriff auf die gleichbenannte Variable in der Basisklasse immer gewährleistet.
-Allerdings muss der Zugriff immer über die Basisklasse gehen.
-Bei der zweiten MÖglichkeit erlaubt uns der C-Standard keine anonyme Struktur, wenn eine gleichnamige Variable bereits in der Basisklasse vorhanden ist.
-Das schränkt zwar in der Wahl der Variablenname etwas ein, aber der Zugriff auf die Variablen in der Basisklasse wird kürzer.
-Wir werden die erste Möglichkeit verwenden, da sie uns weniger einschränkt.
-
-\noindent\begin{minipage}{.45\textwidth}
-\begin{minted}{C}
-struct A {
- int p;
-};
-
-struct B {
- A super;
- int q;
- int p; // Kein Namenskonflikt
-};
-
-B b;
-b.super.p = 5;
-b.q = 6;
-b.p = 7;
-\end{minted}
-\end{minipage}\hfill
-\begin{minipage}{.45\textwidth}
-\begin{minted}{C}
-struct A {
- int p;
-};
-
-struct B {
- A;
- int q;
- // int p; 
- // Name bereits vergeben
-};
-
-B b;
-b.p = 5;
-b.q = 6;
-\end{minted}
-\end{minipage}
-
-
-
-
-
-
-
-%\begin{frame}[fragile]{Beispiel}
-%\begin{columns}
-%\column{0.65\textwidth}
-
-
-\tikzset{
- treenode/.style = {align=center, inner sep=4pt, text centered, font=\sffamily},
- arn_n/.style = {treenode, rectangle, font=\sffamily}
-}
-
-
-\begin{figure}[h]
-	\centering
-\begin{tikzpicture}[<-,>=stealth',level/.style={sibling distance = 5.5cm/#1,
- level distance = 1cm}] 
- \node [arn_n] {\mintinline{C}{shape_t}}
-	 child{ node [arn_n] {\mintinline{C}{line_t}} 
-		 child{ node [arn_n] {\mintinline{C}{arrow_t}}}
-	 }
-	 child{ node [arn_n] {\mintinline{C}{cirle_t}}
-		 child{ node [arn_n] {\mintinline{C}{arc_t}}}
-		 child{ node [arn_n] {\mintinline{C}{angle_t}}}
-	 }
-; 
-\end{tikzpicture}
-\caption{Klassen Hierarchie}
-\label{fig:hierarchy}
-\end{figure}
-
-%  \begin{figure}
-%    \begin{center}
-%      \includegraphics[width=0.9\textwidth]{type_sizes.png}
-%    \end{center}
-%    \caption{Beispielgrafik}
-%  \end{figure}
-
-\inputminted{C}{code/employees/employee.h}
-
-
-%\end{frame}
-
-
-%\begin{frame}[fragile]{Anonyme Strukturen}
-
-\begin{code}
-\caption{Basisklasse}
-\begin{minted}{C}
-struct base_t { int a; };
-\end{minted}
-\end{code}
-
-\begin{code}
-\caption{Anonyme Struktur}
-\begin{minted}{C}
-struct derived_t {
- struct base_t;
- int b;
-};
-\end{minted}
-\end{code}
-
-\begin{code}
-\caption{Zugriff}
-\begin{minted}{C}
-struct derived_t d;
-d.a = 5;
-d.b = 6;
-\end{minted}
-\end{code}
-
-\begin{code}
-\caption{Beispielquelltext}
-\begin{minted}{C}
-struct derived_t {
- struct base_t this;
- int b;
-};
-\end{minted}
-\end{code}
-
-\begin{code}
-\caption{Beispielquelltext}
-\begin{minted}{C}
-struct derived_t d;
-d.this.a = 5;
-d.b = 6;
-\end{minted}
-\end{code}
 
 
 \section{Abstrakte Klassen}

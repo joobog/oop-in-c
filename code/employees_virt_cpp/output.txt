@@ -1,0 +1,16 @@
+[DEBUG] Employee::Employee(const char*, const char*):9 - Matthias Gross
+[DEBUG] Manager::Manager(const char*, const char*, int):9 - Matthias Gross
+[DEBUG] Employee::Employee(const char*, const char*):9 - Ulrike Müller
+[DEBUG] int Manager::add_member(Employee*):22 - Matthias Gross
+[DEBUG] Employee::Employee(const char*, const char*):9 - Hans Meier
+[DEBUG] int Manager::add_member(Employee*):22 - Matthias Gross
+[DEBUG] void Manager::print():34 - Matthias Gross
+Manager (10) Matthias Gross
+[DEBUG] void Employee::print():21 - Ulrike Müller
+Employee: Ulrike Müller
+[DEBUG] void Employee::print():21 - Hans Meier
+Employee: Hans Meier
+[DEBUG] Employee::~Employee():15 - Hans Meier
+[DEBUG] Employee::~Employee():15 - Ulrike Müller
+[DEBUG] Manager::~Manager():17 - 
+[DEBUG] Employee::~Employee():15 - Matthias Gross

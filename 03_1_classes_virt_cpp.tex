@@ -1,0 +1,46 @@
+\section{Abgeleiteten Klassen}
+Dieser Abschnitt zeigt einen vollständigen Beispiel einer Vererbung in C++.
+In einem Unternehmen werden von den gewöhnlichen Angestellten nur der Vorname und Nachname gespeichert.
+Es ist möglich den Vornamen und Namen ausgeben zu lassen.
+
+\begin{code}
+	\caption{C++ Beispiel: Employee Klasse}
+	\label{code:virtcpp:employee}
+	\inputminted{cpp}{code/employees_virt_cpp/employee.hpp}
+	%\inputminted{cpp}{code/employees_virt_cpp/employee.cpp}
+\end{code}
+
+Ein Manager ist ein Angestellter mit einem bestimmten Level.
+Ihm kann eine Gruppe bis maximal von 10 Angestellten zugeordnet werden.
+Es ist möglich alle diese Information über einen Manager anzeigen zu lassen.
+
+\begin{code}
+	\caption{C++ Beispiel: Manager Klasse}
+	\label{code:virtcpp:manager}
+	\inputminted{cpp}{code/employees_virt_cpp/manager.hpp}
+	%\inputminted{cpp}{code/employees_virt_cpp/manager.cpp}
+\end{code}
+
+Dieser Zusammenhang ist abgebildet durch die Klassen \mintinline{cpp}{Employee} und \mintinline{cpp}{Manager}.
+
+
+Eine mögliche Nutzung ist in \Cref{code:virtcpp:usage} dargestellt.
+Wir haben in den Konstruktor, Destruktor und Memberfunktionen Debugging-Code eingeschleusst um die Aufrufreihenfolge zu verfolgen.
+Als Kommentar zur jeder Ausgabe steht auch der Vorname und der Nachname der Angestellten, um die Aufrufe zuzuordnen zu können.
+In der Ausgabe kann man sehen, dass beim Erzeugen des Objektes stets ein passender Konstruktor aufgerufen wird.
+Am Ende werden die Objekte nach dem LIFO Prizip automatisch zerstört, weil der Gültigkeitsbereich der Objekte, der sich auf die \mintinline{cpp}{main} Funktion beschränkt, verlassen wird.
+Zwischen den Konstruktor- und Destruktoraufrufen sehen wir die Aufrufend er Memberfunktionen und die Ausgabe von \mintinline{cpp}{printf}.
+
+\begin{code}
+	\caption{C++ Beispiel: Nutzung}
+	\label{code:virtcpp:usage}
+	\inputminted{cpp}{code/employees_virt_cpp/main.cpp}
+\end{code}
+
+\begin{code}
+	\caption{C++ Beispiel: Ausgabe}
+	\label{code:virtcpp:output}
+	\inputminted[bgcolor=white]{text}{code/employees_virt_cpp/output.txt}
+\end{code}
+
+Dieses Verhalten wollten wir in C nachbilden.

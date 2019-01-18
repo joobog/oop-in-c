@@ -1,8 +1,6 @@
 #include "employee.h"
 #include "manager.h"
 
-#define MANAGER ((manager_vtbl_t*) manager.super.vtbl)->
-#define employee_print(me) ((me)->vtbl->print(me))
 
 int main(int argc, char** argv) {
 	employee_t employee1;
@@ -13,10 +11,13 @@ int main(int argc, char** argv) {
 
 	manager_t manager;
 	manager_constructor(&manager, "Matthias", "Gross", 1);
-	manager.
-	((manager_vtbl_t*) manager.super.vtbl)->add_member(&manager, &employee1);
-	((manager_vtbl_t*) manager.super.vtbl)->add_member(&manager, &employee2);
-	employee_print(&manager.super);
+
+	M_manager_add_member(&manager, &employee1);
+	M_manager_add_member(&manager, &employee2);
+	M_manager_print(&manager);
+
+	employee_t *foo = (employee_t*) &manager;
+	M_employee_print(foo);
 
 	manager_destructor(&manager);
 	employee_destructor(&employee2);

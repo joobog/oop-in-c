@@ -1,0 +1,79 @@
+
+\section{Klassen}
+Eine Klasse definiert einen Bauplan für einen neuen Datentypen.
+Vor Allem legen wir fest welche Daten die Klasse beinhalten soll.
+Desweiteren definieren wir die Operation, die mit dieser Klasse gebunden sind.
+
+
+\section{Klassendeklaration}
+
+Die Stukturen kapseln die Daten ein.
+In unseren Beispiel speichern wir von einem Eingetellter den Vornamen, den Namen und den Job, der er ausübt.
+
+In C werden die Strukturen nicht automatisch initialisiert.
+Deswegen, nach dem wir eine Struktur erzeugen, werden die Membervariablen üblicherweise zufällige Werte beinhalten.
+Es ist die Aufgabe der Programmierer die Objekte in einen Konsistenten zustand zu bringen.
+Deswegen benötigt jede Klasse mindestens einen Konstruktor.
+Abhängig von dem Funktionalität, kann eine Klasse mehrere Konstruktoren haben.
+
+Desweiteren, ist es die Aufgabe des Programmieres sich um die Speicherverwaltung zu kümmern.
+Insbesondere auf dem Heap allozierter Speicher muss nach der Verwendung wieder freigegben werden, um Speicherlecks zu vermeiden.
+Für diesen Zwecke benötigen wir eine Destruktor.
+Der Destruktor muss manuell aufgerufen werden, da C uns keine Hilfmittel für die Automatisierung zur Verfügung stellt, z.B. kein Garbage-Kollektor oder Aufruf vom Destruktor beim Verlassen des Gültigekeitsbereiches des Objektes.
+
+Der Konstruktor, Destruktor und die Memberfuktionen lagern wir extern aus.
+Da die Memberfunktionen nicht an eine Struktur gebunden werden können, ist es hilfreich sich eine Namenskonvetione zu überlegen, die die Zugehörigkeit anzeigt. 
+In den Beispielen werden wir die Memberfunktionen stets nach dem folgenden Schema benennen.
+\begin{lstlisting}
+<Memberfunktionsname> = <Klassenname>_<Funktionsname>
+\end{lstlisting}
+
+\begin{code}
+	\caption{Einfache Klassen: employees.h}
+	\inputminted{C}{code/employees_plain/employee.h}
+\end{code}
+
+
+
+\subsection{Klassenfunktionen}
+In C bietet es sich an die Implementierung der Funktionen in separate Dateien auszulagern.
+Das ist aber nicht zwingend erforderlich, aber wir werden es in dieser Anleitung so machen.
+Die Implementierung koennte wie folgt aussehen.
+
+\begin{code}
+	\caption{Einfache Klassen: employees.c}
+	\inputminted{C}{code/employees_plain/employee.c}
+\end{code}
+
+
+\subsection{Nutzung}
+Bei der Benutzung sollen wir beachten, dass wir den Konstruktor und den Destruktor manuell aufrufen. 
+\begin{code}
+	\caption{Einfache Klassen: main.c}
+	\inputminted{C}{code/employees_plain/main.c}
+\end{code}
+
+\begin{code}
+	\caption{Einfache Klassen: Ausgabe}
+	\inputminted[bgcolor=white]{text}{code/employees_plain/output.txt}
+\end{code}
+
+\subsection{Kritik}
+\subsubsection{Zugriffskontrolle}
+C-Standard bietet und keine Konstrukte mit den mit den man den Zugriff auf die Klassenvariablen und Klassenfunktionen beschränken könnte. Alle Variablen und Methoden sind \mintinline{C}|public|. Nachbildung von \mintinline{C}|protected| \mintinline{C}|private| nicht ohne weiteres möglich.
+\subsubsection{Konstruktor und Destruktor}
+Es ist leider so, dass beim Erzeugen eines Objektes der passende Konstruktor nicht automatisch aufgerufen wird, wie z.B. bei C++ oder Java.
+Darum muss sich der Programmier explizit kümmern.
+Das erfordert zwar viel Disziplin, bedeutet für uns keine Nachteile in der Funktionalität.
+Bei den Destruktoren müssen wir leider Abstriche machen.
+C bietet uns weder eine Garbage-Kollektor noch Ruf den Destrutkor automatisch auf, wenn das Programm den Scope verlässt.
+Konkret für uns heißt es wieder viel Disziplin, aber auch das wir bestimmte Programmierkonzepte wie "RAII" nicht umsetzen können.
+
+\begin{note}
+	Das geht mit der clean() Erweiterung. Das ist aber keine Standard-C, somit wird diese MÖglichkeit hier nicht behandelt.
+\end{note}
+
+
+
+
+Wie wir spaeter sehen werden liegt der Vorteil der einfachen Klassen im geringeren Speicherverbrauch durch den fehlenden Zeiger auf eine virtuelle Tabelle.
