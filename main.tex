@@ -20,7 +20,8 @@
 
 \usepackage{xcolor}
 \usepackage{caption}
-\usepackage[newfloat,cache=false]{minted}
+%\usepackage[newfloat,cache=false]{minted}
+\usepackage[newfloat]{minted}
 
 \makeatletter
 \newcommand{\currentfontsize}{\fontsize{\f@size}{\f@baselineskip}\selectfont}
@@ -35,7 +36,7 @@
 \SetupFloatingEnvironment{listing}{name=Source Code}
 
 \definecolor{bg}{HTML}{282828}
-\setminted{style=monokai, fontsize=\small, bgcolor=bg, linenos}
+\setminted{style=monokai, fontsize=\small, bgcolor=bg, linenos, tabsize=2}
 
 \usepackage[most]{tcolorbox}
 
@@ -88,9 +89,9 @@
 
 \tableofcontents
 
-\input{00_introduction}
-\input{02_classes_plain}
-\input{03_1_classes_virt_cpp}
+%\input{00_introduction}
+%\input{02_classes_plain}
+%\input{03_1_classes_virt_cpp}
 \input{03_2_classes_virt_c}
 %\input{05_best_practices}
 
