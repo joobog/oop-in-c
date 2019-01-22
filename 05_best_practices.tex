@@ -1,141 +1,30 @@
-\subsection{Nameskonflikte}
+%\tikzset{
+% treenode/.style = {align=center, inner sep=4pt, text centered, font=\sffamily},
+% arn_n/.style = {treenode, rectangle, font=\sffamily}
+%}
 
-Bevor wir die Vererbung implementieren, müssen wir es die Entscheidung treffen wie wir mit den Namenkonflikten umgehen.
-Wir haben die Wahl zwischen einer benannten oder anonymen Basisklasse.
-Bei der ersteren ist der Zugriff auf die gleichbenannte Variable in der Basisklasse immer gewährleistet.
-Allerdings muss der Zugriff immer über die Basisklasse gehen.
-Bei der zweiten MÖglichkeit erlaubt uns der C-Standard keine anonyme Struktur, wenn eine gleichnamige Variable bereits in der Basisklasse vorhanden ist.
-Das schränkt zwar in der Wahl der Variablenname etwas ein, aber der Zugriff auf die Variablen in der Basisklasse wird kürzer.
-Wir werden die erste Möglichkeit verwenden, da sie uns weniger einschränkt.
-
-\noindent\begin{minipage}{.45\textwidth}
-\begin{minted}{C}
-struct A {
- int p;
-};
-
-struct B {
- A super;
- int q;
- int p; // Kein Namenskonflikt
-};
-
-B b;
-b.super.p = 5;
-b.q = 6;
-b.p = 7;
-\end{minted}
-\end{minipage}\hfill
-\begin{minipage}{.45\textwidth}
-\begin{minted}{C}
-struct A {
- int p;
-};
-
-struct B {
- A;
- int q;
- // int p; 
- // Name bereits vergeben
-};
-
-B b;
-b.p = 5;
-b.q = 6;
-\end{minted}
-\end{minipage}
+%\begin{figure}[h]
+%  \centering
+%\begin{tikzpicture}[<-,>=stealth',level/.style={sibling distance = 5.5cm/#1,
+% level distance = 1cm}] 
+% \node [arn_n] {\mintinline{C}{shape_t}}
+%   child{ node [arn_n] {\mintinline{C}{line_t}} 
+%     child{ node [arn_n] {\mintinline{C}{arrow_t}}}
+%   }
+%   child{ node [arn_n] {\mintinline{C}{cirle_t}}
+%     child{ node [arn_n] {\mintinline{C}{arc_t}}}
+%     child{ node [arn_n] {\mintinline{C}{angle_t}}}
+%   }
+%; 
+%\end{tikzpicture}
+%\caption{Klassen Hierarchie}
+%\label{fig:hierarchy}
+%\end{figure}
 
 
-
-
-
-
-
-%\begin{frame}[fragile]{Beispiel}
-%\begin{columns}
-%\column{0.65\textwidth}
-
-
-\tikzset{
- treenode/.style = {align=center, inner sep=4pt, text centered, font=\sffamily},
- arn_n/.style = {treenode, rectangle, font=\sffamily}
-}
-
-
-\begin{figure}[h]
-	\centering
-\begin{tikzpicture}[<-,>=stealth',level/.style={sibling distance = 5.5cm/#1,
- level distance = 1cm}] 
- \node [arn_n] {\mintinline{C}{shape_t}}
-	 child{ node [arn_n] {\mintinline{C}{line_t}} 
-		 child{ node [arn_n] {\mintinline{C}{arrow_t}}}
-	 }
-	 child{ node [arn_n] {\mintinline{C}{cirle_t}}
-		 child{ node [arn_n] {\mintinline{C}{arc_t}}}
-		 child{ node [arn_n] {\mintinline{C}{angle_t}}}
-	 }
-; 
-\end{tikzpicture}
-\caption{Klassen Hierarchie}
-\label{fig:hierarchy}
-\end{figure}
-
-%  \begin{figure}
-%    \begin{center}
-%      \includegraphics[width=0.9\textwidth]{type_sizes.png}
-%    \end{center}
-%    \caption{Beispielgrafik}
-%  \end{figure}
-
-\inputminted{C}{code/employees/employee.h}
-
-
-%\end{frame}
-
-
-%\begin{frame}[fragile]{Anonyme Strukturen}
-
-\begin{code}
-\caption{Basisklasse}
-\begin{minted}{C}
-struct base_t { int a; };
-\end{minted}
-\end{code}
-
-\begin{code}
-\caption{Anonyme Struktur}
-\begin{minted}{C}
-struct derived_t {
- struct base_t;
- int b;
-};
-\end{minted}
-\end{code}
-
-\begin{code}
-\caption{Zugriff}
-\begin{minted}{C}
-struct derived_t d;
-d.a = 5;
-d.b = 6;
-\end{minted}
-\end{code}
-
-\begin{code}
-\caption{Beispielquelltext}
-\begin{minted}{C}
-struct derived_t {
- struct base_t this;
- int b;
-};
-\end{minted}
-\end{code}
-
-\begin{code}
-\caption{Beispielquelltext}
-\begin{minted}{C}
-struct derived_t d;
-d.this.a = 5;
-d.b = 6;
-\end{minted}
-\end{code}
+\inputminted{c}{code/examples/employees_virt/main2_short.c}
+\inputminted{text}{code/examples/employees_virt/output2.txt}
+		%\begin{itemize}
+			%\item Objekte mit der gleicher Basis können z.B. in einem Array gespeichert werden
+			%\item Es wird die richtige virtuelle Funktion aufgerufen
+		%\end{itemize}

@@ -1,79 +1,117 @@
 
-\section{Klassen}
+\section{Einfache Klassen}
 Eine Klasse definiert einen Bauplan für einen neuen Datentypen.
-Vor Allem legen wir fest welche Daten die Klasse beinhalten soll.
-Desweiteren definieren wir die Operation, die mit dieser Klasse gebunden sind.
+Allerdings, bietet uns die C-Programmiersprache keine echten Klassen an.
+Das Nächste, was Klassen nahe kommt sind Strukturen.
+Sie spielen deshalb eine zentrale Rolle bei der Umsetzung des OOP Konzeptes.
 
+\subsection{Klassendeklaration}
 
-\section{Klassendeklaration}
+In C werden, bis auf einige Ausnahmen, die Variablen, insbesondere Strukturen, nicht automatisch initialisiert.
+Nach Instanziierung der Strukturen werden wir deswegen üblicherweise zufällige Werte in den Membervariablen vorfinden.
+Es ist die Aufgabe der Programmierer die Instanzen in einen Konsistenten zustand zu bringen.
+Desweiteren, werden wir in statt Strukturen, von den Klassen sprechen.
+Die Instanzen der Strukturen nennen wir Objekte.
 
-Die Stukturen kapseln die Daten ein.
-In unseren Beispiel speichern wir von einem Eingetellter den Vornamen, den Namen und den Job, der er ausübt.
-
-In C werden die Strukturen nicht automatisch initialisiert.
-Deswegen, nach dem wir eine Struktur erzeugen, werden die Membervariablen üblicherweise zufällige Werte beinhalten.
-Es ist die Aufgabe der Programmierer die Objekte in einen Konsistenten zustand zu bringen.
-Deswegen benötigt jede Klasse mindestens einen Konstruktor.
+Bevor wir mit dem Konzept fortfahren, wollen wir einen generellen Blick auf die OOP in den anderen Programmiersprachen werfen.
+Die nativen OOP Programmiersparachen wie C++ und Java erzeugen automatisch eine Reihe von Default-Funktionen, die bestimmte Operationen auf Objekten ausführen, wenn der Programmier sie selber nicht erzeugt.
+Zu einem sind es Konstruktoren, die dafür zuständig sind den konsisteten Zustand von Objekten sicherzustellen.
+Jede Klasse benötigt mindestens einen Konstruktor.
 Abhängig von dem Funktionalität, kann eine Klasse mehrere Konstruktoren haben.
+Weitere wichtige Funktionen sind Kopierkonstruktor, Zuweisungsoperator und Destruktor.
+Um sauber das OOP-Konzept umzusetzen, benötigen wir auch diese Funktionen.
+Da C-Programmiersprache sie nicht automatisch erzeugt, muss der Programmier sich darum kümmern.
 
-Desweiteren, ist es die Aufgabe des Programmieres sich um die Speicherverwaltung zu kümmern.
-Insbesondere auf dem Heap allozierter Speicher muss nach der Verwendung wieder freigegben werden, um Speicherlecks zu vermeiden.
-Für diesen Zwecke benötigen wir eine Destruktor.
-Der Destruktor muss manuell aufgerufen werden, da C uns keine Hilfmittel für die Automatisierung zur Verfügung stellt, z.B. kein Garbage-Kollektor oder Aufruf vom Destruktor beim Verlassen des Gültigekeitsbereiches des Objektes.
+\begin{itemize}
+ \item Kopierkonstruktor
+	 \begin{itemize}
+		 \item Ein Kopierkonstruktor wird auf uninitialisierte Objekte angewendet. Er weist eine Kopie des Quellobjektes einem uninitialisierten Zielobjekt zu.
+\begin{minted}{c}
+someclass_t target;
+someclass_t source;
+someclass_constructor(&target, /* init params */)
+someclass_copy(&target, &source);
+/* ... */
+\end{minted}
+	 \end{itemize}
+ \item Zuweisungsoperator
+	 \begin{itemize}
+		 \item Ein Zuweisungsoperator wird auf bereits initializierte Objekte angewendet. Das Zielobjekt wird zuerst bereinigt. Danach wird eine Kopie aus dem Quellobjekt erzeugt und dem Zielobjekt zugewiesen. So entstehen keine Speicherlecks.
+\begin{minted}{c}
+someclass_t target;
+someclass_t source;
+someclass_constructor(&target, /* init params */)
+someclass_constructor(&source, /* init params */)
+someclass_assign(&target, &source);
+/* ... */
+\end{minted}
+	 \end{itemize}
+ \item Destruktor
+	 \begin{itemize}
+		 \item Ruf Destruktoren von allen Membervariablen des Objektes.
+	 \end{itemize}
+\end{itemize}
 
-Der Konstruktor, Destruktor und die Memberfuktionen lagern wir extern aus.
-Da die Memberfunktionen nicht an eine Struktur gebunden werden können, ist es hilfreich sich eine Namenskonvetione zu überlegen, die die Zugehörigkeit anzeigt. 
-In den Beispielen werden wir die Memberfunktionen stets nach dem folgenden Schema benennen.
-\begin{lstlisting}
-<Memberfunktionsname> = <Klassenname>_<Funktionsname>
-\end{lstlisting}
+Der Destruktor ist ein besonders wichtiger Bestandteil von OOP.
+Insbesondere, weil auf dem Heap allozierter Speicher nach der Verwendung wieder freigegben werden muss, um Speicherlecks zu vermeiden.
+Für diesen Zwecke muss zu einem geeigneten Zeitpunkt der Destruktor aufgerufen werden.
+In C muss Destruktor manuell aufgerufen werden, da C uns keine Hilfmittel für die Automatisierung zur Verfügung stellt, z.B. kein Garbage-Kollektor oder Aufruf vom Destruktor beim Verlassen des Gültigekeitsbereiches des Objektes.
+
+In unseren fiktiven Beispiel wollen wir den Vornamen, den Namen und den Job, der die Angestellten einer Firma ausüben speichern.
+In \Cref{code:plain:header} beinhaltet die Strukture \mintinline{c}{employee_t} die Membervariablen.
+Weiter unten werden der Konstruktor, Destruktor, Kopierkonstruktor und der Zuweisungsoperator deklariert.
+Zusätzlich deklarieren wir eine \mintinline{c}{print} Memberfunktion.
+
 
 \begin{code}
 	\caption{Einfache Klassen: employees.h}
-	\inputminted{C}{code/employees_plain/employee.h}
+	\label{code:plain:header}
+	\inputminted{C}{code/examples/employees_plain/employee.h}
 \end{code}
 
 
 
 \subsection{Klassenfunktionen}
-In C bietet es sich an die Implementierung der Funktionen in separate Dateien auszulagern.
-Das ist aber nicht zwingend erforderlich, aber wir werden es in dieser Anleitung so machen.
-Die Implementierung koennte wie folgt aussehen.
+In C bietet es sich an die Implementierung der Funktionen in separate Source-Dateien auszulagern.
+Wie die Implementierung aussehen kann zeigt \Cref{code:plain:source}.
 
 \begin{code}
 	\caption{Einfache Klassen: employees.c}
-	\inputminted{C}{code/employees_plain/employee.c}
+	\label{code:plain:source}
+	\inputminted{C}{code/examples/employees_plain/employee.c}
 \end{code}
 
 
 \subsection{Nutzung}
-Bei der Benutzung sollen wir beachten, dass wir den Konstruktor und den Destruktor manuell aufrufen. 
+Bei der Benutzung sollte man immer im Erinnerung behalten, dass alle Funktionen, mindestens ein Konstruktor und Destruktor manuell aufrufen werden müssen.
+\Cref{code:plain:usage} zeigt anhand von Beispielen wie der Konstruktor, Kopierkonstruktor, Zuweisungsoperator und der Destruktor angewendet werden können.
+
 \begin{code}
 	\caption{Einfache Klassen: main.c}
-	\inputminted{C}{code/employees_plain/main.c}
+	\label{code:plain:usage}
+	\inputminted{C}{code/examples/employees_plain/main.c}
 \end{code}
 
-\begin{code}
-	\caption{Einfache Klassen: Ausgabe}
-	\inputminted[bgcolor=white]{text}{code/employees_plain/output.txt}
-\end{code}
+%\begin{code}
+%  \caption{Einfache Klassen: Ausgabe}
+%  \label{code:plain:output}
+%  \inputminted[bgcolor=white]{text}{code/examples/employees_plain/output.txt}
+%\end{code}
 
-\subsection{Kritik}
+\subsection{Einschränkungen}
 \subsubsection{Zugriffskontrolle}
-C-Standard bietet und keine Konstrukte mit den mit den man den Zugriff auf die Klassenvariablen und Klassenfunktionen beschränken könnte. Alle Variablen und Methoden sind \mintinline{C}|public|. Nachbildung von \mintinline{C}|protected| \mintinline{C}|private| nicht ohne weiteres möglich.
+C-Standard bietet kein Hilfsmittel, mit den mit den man den Zugriff auf die Klassenvariablen und Klassenfunktionen beschränken könnte. 
+Alle Variablen und Methoden sind quasi \mintinline{C}|public|. 
+Nachbildung von \mintinline{C}|protected| \mintinline{C}|private| nicht ohne Weiteres möglich.
+
 \subsubsection{Konstruktor und Destruktor}
-Es ist leider so, dass beim Erzeugen eines Objektes der passende Konstruktor nicht automatisch aufgerufen wird, wie z.B. bei C++ oder Java.
+Wie bereits diskutiert, ist es leider so, dass beim Erzeugen eines Objektes der passende Konstruktor nicht automatisch aufgerufen wird, wie z.B. bei C++ oder Java.
 Darum muss sich der Programmier explizit kümmern.
 Das erfordert zwar viel Disziplin, bedeutet für uns keine Nachteile in der Funktionalität.
 Bei den Destruktoren müssen wir leider Abstriche machen.
 C bietet uns weder eine Garbage-Kollektor noch Ruf den Destrutkor automatisch auf, wenn das Programm den Scope verlässt.
 Konkret für uns heißt es wieder viel Disziplin, aber auch das wir bestimmte Programmierkonzepte wie "RAII" nicht umsetzen können.
 
-\begin{note}
-	Das geht mit der clean() Erweiterung. Das ist aber keine Standard-C, somit wird diese MÖglichkeit hier nicht behandelt.
-\end{note}
-
-
-
-
-Wie wir spaeter sehen werden liegt der Vorteil der einfachen Klassen im geringeren Speicherverbrauch durch den fehlenden Zeiger auf eine virtuelle Tabelle.
+%\begin{note}
+%  Das geht mit der clean() Erweiterung. Das ist aber keine Standard-C, somit wird diese Möglichkeit hier nicht behandelt.
+%\end{note}

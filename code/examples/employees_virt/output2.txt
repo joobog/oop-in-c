@@ -1,0 +1,5 @@
+Employee: Ulrike Müller
+Employee: Hans Meier
+Manager (1) Matthias Gross
+	 Group member: Ulrike Müller
+	 Group member: Hans Meier

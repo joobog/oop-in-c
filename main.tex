@@ -35,8 +35,9 @@
 \newenvironment{code}{\captionsetup{type=listing}}{}
 \SetupFloatingEnvironment{listing}{name=Source Code}
 
-\definecolor{bg}{HTML}{282828}
-\setminted{style=monokai, fontsize=\small, bgcolor=bg, linenos, tabsize=2}
+%\definecolor{bg}{HTML}{282828}
+\definecolor{bg}{HTML}{EAEAEA}
+\setminted{style=default, fontsize=\small, bgcolor=bg, linenos, tabsize=2}
 
 \usepackage[most]{tcolorbox}
 
@@ -83,24 +84,28 @@
 %\institute{Arbeitsbereich Wissenschaftliches Rechnen\\Fachbereich Informatik\\Fakultät für Mathematik, Informatik und Naturwissenschaften\\Universität Hamburg}
 \date{2019-01-14}
 
+\usepackage{titlesec}
+\newcommand{\sectionbreak}{\clearpage}
 
 \begin{document}
 \maketitle
 
 \tableofcontents
 
-%\input{00_introduction}
-%\input{02_classes_plain}
-%\input{03_1_classes_virt_cpp}
-\input{03_2_classes_virt_c}
-%\input{05_best_practices}
-
-
+\input{00_introduction}
+\input{02_classes_plain}
+\section{Vererbung}
+\input{03_1_classes_virt_cpp}
+\input{03_2_concepts}
+\input{03_3_classes_virt_c}
+\input{05_best_practices}
 
 
 
 \section{Abstrakte Klassen}
-\subsection{Virtuelle Funktionen}
+
+TODO
+
 %%https://www.embedded.com/electronics-blogs/programming-pointers/4391967/Virtual-functions-in-C
 %%http://vgcoding.blogspot.com/2014/03/virtual-functions-in-c.html
 

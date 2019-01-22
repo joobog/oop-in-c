@@ -1,10 +1,12 @@
 \section{Einleitung}
-Obwohl C keine Objekt-orientiert Programmierung unterstützt kann man die Sprache sehr wohl objekt-orientiert programmieren.
-Das erfordert allerdings etwas Disziplin, weil C uns kaum unterstützt.
-Diese Ausarbeitung zeigt nur eine Möglichkeit objekt-orientiert zu Programmieren von Vielen.
-Hier wollen wir nur so weit gehen, wie es mit dem C-Standard möglich ist, d.h. ohne Verwendung von Kompilererweiterungen und ohne Praeprozessor.
+Obwohl C keine objektorientierte Programmierung unterstützt, kann man mit der Sprache den Konzept der objektorientierten Programmierung umsetzen.
+Das erfordert allerdings ein sehr viel Disziplin, weil C-Sprache den Programmierer kaum dabei unterstützt.
+Sie eschwert es sogar, indem sie viele Umsetzungsmöglichkeiten bietet.
+In dieser Ausarbeitung behandeln nur eine Möglichkeit von Vielen objektorientiert zu Programmieren.
+Unsere Absicht ist möglichst nicht über den C-Standard hinausgehen, d.h. ohne Verwendung von exotischen Kompilererweiterungen und mit minimalen Einsatz von Präprozessor.
 
-\section{Debugging}
+
+\subsection{Debugging}
 Um die Funktionsweise zu erläutern schleusen wir Debugging-Code in die Programme.
 Es handelt sich dabei um die Ausgabe des Funktionsnamen, der Zeile und Kommentar.
 Das Macro ist dargestellt in \Cref{code:debug}
@@ -12,5 +14,14 @@ Das Macro ist dargestellt in \Cref{code:debug}
 \begin{code}
 	\caption{Debugging Macro}
 	\label{code:debug}
-	\inputminted{c}{code/employees_virt/debug.h}
+	\inputminted{c}{code/examples/employees_virt/debug.h}
+\end{code}
+
+\subsection{Kompilierung}
+Die anonymen Strukturen haben sich als esseziell für die virtuellen Strukturen erwiesen.
+Um sie zu aktivieren, verwenden wir bei der Kompilierung den folgenden Kompiler-Flag.
+\begin{code}
+	\begin{minted}{bash}
+gcc -fms-extensions
+	\end{minted}
 \end{code}

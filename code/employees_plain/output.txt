@@ -1,4 +1,0 @@
-[DEBUG] employee_constructor:9 - 
-[DEBUG] employee_print:23 - 
-Employee: Ulrike Müller - Designer
-[DEBUG] employee_destructor:16 - 

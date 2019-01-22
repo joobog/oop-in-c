@@ -1,0 +1,14 @@
+[DEBUG] employee_constructor:14 - Ulrike Müller
+[DEBUG] employee_constructor:14 - Hans Meier
+[DEBUG] employee_constructor:14 - Matthias Gross
+[DEBUG] manager_constructor:15 - Matthias Gross
+[DEBUG] manager_add_member:32 - Matthias Gross
+[DEBUG] manager_add_member:32 - Matthias Gross
+[DEBUG] manager_print:45 - Matthias Gross
+Manager (1) Matthias Gross
+	 Group member: Ulrike Müller
+	 Group member: Hans Meier
+[DEBUG] manager_destructor:25 - Matthias Gross
+[DEBUG] employee_destructor:22 - Matthias Gross
+[DEBUG] employee_destructor:22 - Hans Meier
+[DEBUG] employee_destructor:22 - Ulrike Müller

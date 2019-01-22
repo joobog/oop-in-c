@@ -1,0 +1,13 @@
+[DEBUG] employee_constructor:9 - 
+[DEBUG] employee_print:40 - 
+Employee: Ulrike Müller - Designer
+[DEBUG] employee_copy:23 - 
+[DEBUG] employee_print:40 - 
+Employee: Ulrike Müller - Designer
+[DEBUG] employee_constructor:9 - 
+[DEBUG] employee_assign:30 - 
+[DEBUG] employee_print:40 - 
+Employee: Ulrike Müller - Designer
+[DEBUG] employee_destructor:16 - 
+[DEBUG] employee_destructor:16 - 
+[DEBUG] employee_destructor:16 - 
